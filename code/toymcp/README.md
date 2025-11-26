@@ -11,13 +11,13 @@ A comprehensive Python learning project for the Model Context Protocol (MCP), fe
 uv venv --python 3.12
 
 # Activate the virtual environment
-# source .venv/bin/activate
-
-# Install dependencies
-uv sync
+source .venv/bin/activate
 
 # Editable install (development mode)
 uv pip install -e .
+
+# Install dependencies
+uv sync
 ```
 
 ### Running the Server

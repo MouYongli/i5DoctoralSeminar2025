@@ -9,7 +9,7 @@ toyagent/
 │   ├── Dockerfile       # Backend Docker image
 │   └── src/
 ├── frontend/            # Next.js frontend
-│   ├── .env.example     # Local development environment variables example
+│   ├── .env.local.example     # Local development environment variables example
 │   ├── Dockerfile       # Frontend Docker image
 │   └── src/
 └── docker/              # Docker orchestration configuration
@@ -19,17 +19,38 @@ toyagent/
 
 ---
 
+## Quick Start
+
+Copy `.env.example` or `.env.local.example` to `.env` or `.env.local` and configure credential environment variables
+
+```bash
+make setup
+
+make install
+
+make docker-local-up && make db-init
+
+make dev-back
+
+# New terminal
+make dev-worker
+
+# New terminal
+make dev-front
+```
+
+
+
 ## Development Guide
 
 We provide this guide to introduce how to configure and start the i5 Agents system, including both local testing and Docker deployment methods.
 
-
-### Stage 0: Setup Environment Variables
-
+<!-- ### Stage 0: Setup Environment Variables
 ```bash
 chmod +x scripts/setup-env.sh
 bash scripts/setup-env.s
-```
+``` 
+-->
 
 ### Stage 1: Local Development
 

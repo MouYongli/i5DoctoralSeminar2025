@@ -1,0 +1,241 @@
+\section{AI Agents}
+
+%------------------------------------------------
+\subsection{Agent Fundamentals}
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{What Are AI Agents?}
+
+\begin{block}{Definition}
+An \textbf{AI Agent} is a system that uses an LLM as its core controller to 
+\textbf{perceive}, \textbf{reason}, and \textbf{act} within an external environment~\cite{weng2023prompt}.
+Formally, an agent defines a policy
+\[
+\pi: \mathcal{O}^* \rightarrow \mathcal{A},
+\]
+mapping a history of observations $\mathcal{O}^*$ to actions $\mathcal{A}$~\cite{sapkota2025ai}.
+\end{block}
+
+\vspace{0.25cm}
+
+\textbf{Key Characteristics}
+\begin{itemize}
+    \item \textbf{Autonomy:} Operates in iterative loops (The "Agentic Loop") without continuous human intervention.
+    \item \textbf{Goal-driven:} Executes high-level objectives rather than just responding to prompts~\cite{park2023generative}.
+    \item \textbf{Tool Usage:} Interacts with external APIs (Search, Calculator, Code Interpreter).
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Paradigm Shift: Copilot vs. Agent}
+
+\begin{columns}[c] 
+
+\column{.45\textwidth}
+\textbf{Copilot (Human-in-the-loop)}
+\begin{itemize}
+    \item \textbf{Role:} Assistant / Draftsman.
+    \item \textbf{Trigger:} User explicitly prompts every step.
+    \item \textbf{Flow:} Linear (Input $\to$ Output).
+    \item \textit{Example:} GitHub Copilot, ChatGPT.
+\end{itemize}
+
+\column{.45\textwidth}
+\textbf{Agent (Human-on-the-loop)}
+\begin{itemize}
+    \item \textbf{Role:} Actor / Executor.
+    \item \textbf{Trigger:} User sets a high-level goal.
+    \item \textbf{Flow:} Looping (Thought $\to$ Action $\to$ Observation).
+    \item \textit{Example:} AutoGPT, Devin.
+\end{itemize}
+
+\end{columns}
+\end{frame}
+
+%------------------------------------------------
+\subsection{Agent Architecture}
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{The Cognitive Architecture}
+
+An Agent is not just a model; it is a system designed to act autonomously. Based on Lilian Weng's architecture~\cite{weng2023prompt}:
+
+\vspace{0.3cm}
+
+\textbf{Core Components:}
+\begin{enumerate}
+    \item \textbf{Brain (LLM):} The core controller for reasoning and planning.
+    \item \textbf{Memory:} Stores history and knowledge.
+    \item \textbf{Planning:} Task decomposition and self-reflection.
+    \item \textbf{Tools:} Executing actions and manipulating environments.
+\end{enumerate}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Memory Systems in Agents}
+
+Inspired by human cognitive science, Agent memory is categorized into three types~\cite{park2023generative}:
+
+\vspace{0.3cm}
+
+\begin{enumerate}
+    \item \textbf{Working Memory (Short-term):}
+    \begin{itemize}
+        \item \textit{Implementation:} The Context Window.
+        \item \textit{Function:} Stores current reasoning steps, immediate observations, and scratchpad data.
+    \end{itemize}
+
+    \item \textbf{Episodic Memory (Experience):}
+    \begin{itemize}
+        \item \textit{Implementation:} Vector Database (Logs/Trace).
+        \item \textit{Function:} Recalling past events, user interactions, and outcomes of previous actions to learn from experience.
+    \end{itemize}
+
+    \item \textbf{Semantic Memory (Knowledge):}
+    \begin{itemize}
+        \item \textit{Implementation:} Model Weights + RAG (Knowledge Base).
+        \item \textit{Function:} Storing facts about the world (e.g., "The capital of France") independent of personal experience.
+    \end{itemize}
+\end{enumerate}
+\end{frame}
+
+%------------------------------------------------
+\subsection{Reasoning Strategies}
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Reasoning: Beyond Simple Prompting}
+
+Agents require structured thinking to solve complex, multi-step problems.
+
+\vspace{0.2cm}
+
+\begin{itemize}
+    \item \textbf{Chain of Thought (CoT):}
+    \textit{"Let's think step by step."} Decomposing a problem into linear intermediate steps~\cite{wei2022chain}.
+    
+    \item \textbf{Tree of Thoughts (ToT):}
+    Generalizes CoT by exploring multiple "branches" of reasoning possibilities. The agent can look ahead, backtrack, and evaluate different paths globally~\cite{yao2023tree}.
+    
+    \item \textbf{Reflexion (Self-Correction):}
+    An architecture where the agent critiques its own past failures. It generates a "verbal reinforcement" trace to avoid repeating mistakes in the next attempt~\cite{shinn2023reflexion}.
+\end{itemize}
+
+\end{frame}
+
+%------------------------------------------------
+\subsection{Retrieval-Augmented Generation (RAG)}
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{RAG: The Agent's Library}
+
+\textbf{RAG} bridges the gap between the frozen parametric knowledge of the LLM and dynamic external data~\cite{lewis2020retrieval}.
+
+\vspace{0.3cm}
+
+\textbf{Why Agents Need RAG?}
+\begin{itemize}
+    \item \textbf{Hallucination Reduction:} Grounds answers in retrieved documents.
+    \item \textbf{Dynamic Knowledge:} Access to up-to-date information (e.g., stock prices, recent news) without retraining.
+    \item \textbf{Domain Specificity:} Access to private enterprise data.
+\end{itemize}
+
+\vspace{0.2cm}
+
+\textbf{The Flow:}
+\[
+\text{Query} \xrightarrow{\text{Embed}} \text{Vector Search} \xrightarrow{\text{Retrieve}} \xrightarrow{\text{Augment Prompt}} \text{LLM}
+\]
+\end{frame}
+
+%------------------------------------------------
+\subsection{Tools \& MCP}
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Tools \& Action Execution}
+
+Agents use tools to affect the world, turning text output into executable actions~\cite{schick2024toolformer}.
+
+\vspace{0.3cm}
+
+\begin{block}{The Tool Execution Loop}
+1. \textbf{Select:} LLM decides which tool to call based on the prompt.\\
+2. \textbf{Generate:} LLM formats valid JSON arguments (e.g., `{"calc": "12*4"}`).\\
+3. \textbf{Execute:} The runtime (Python/API) runs the function.\\
+4. \textbf{Observe:} Result feeds back into Working Memory.
+\end{block}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{The Integration Challenge}
+
+Without a standard, connecting Agents to data is an $O(M \times N)$ problem.
+
+\vspace{0.4cm}
+
+\begin{itemize}
+    \item \textbf{The Silo Issue:} Developers must write specific integration code for every data source (Google Drive, Slack, GitHub) for every different Agent implementation~\cite{chase2022langchain}.
+    \item \textbf{Fragmentation:} An agent built for Claude Desktop cannot easily access tools built for a LangChain application.
+    \item \textbf{Maintenance Nightmare:} API changes in a data source break all connected agents.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Enter MCP: The "USB-C" for AI}
+
+\textbf{Model Context Protocol (MCP)} is an open standard that unifies how AI models interact with data and tools~\cite{anthropic2024mcp}.
+
+\vspace{0.2cm}
+\textbf{Core Philosophy:} "Build once, run anywhere."
+\vspace{0.2cm}
+
+\begin{block}{MCP Architecture~\cite{mcp_github}}
+\begin{itemize}
+    \item \textbf{MCP Host:} The application where the AI model runs (e.g., Claude Desktop, IDEs like Cursor/Windsurf). It manages the connection lifecycle.
+    \item \textbf{MCP Client:} The protocol implementation within the Host. It maintains 1:1 connections with Servers and handles permission negotiation.
+    \item \textbf{MCP Server:} A lightweight bridge to a specific data source. It exposes capabilities (Resources, Tools) to the Client without knowing the implementation details of the Host.
+\end{itemize}
+\end{block}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{MCP Primitives: What Servers Expose}
+
+MCP Servers expose three primary primitives to the Agent~\cite{mcp_github}:
+
+\vspace{0.3cm}
+
+\begin{enumerate}
+    \item \textbf{Resources (Passive Context):} 
+    \begin{itemize}
+        \item \textit{Role:} Reading data (File content, database rows, logs).
+        \item \textit{Analogy:} Like `GET` requests; providing the "ground truth".
+    \end{itemize}
+    
+    \vspace{0.15cm}
+    
+    \item \textbf{Tools (Active Capabilities):}
+    \begin{itemize}
+        \item \textit{Role:} Executing actions (API calls, scripts).
+        \item \textit{Analogy:} Like `POST` requests; model-controlled execution.
+    \end{itemize}
+    
+    \vspace{0.15cm}
+
+    \item \textbf{Prompts (Reusable Workflows):}
+    \begin{itemize}
+        \item \textit{Role:} Pre-defined templates to help users leverage the server.
+        \item \textit{Example:} A "Debug Error" prompt that automatically loads the error log Resource and the code context.
+    \end{itemize}
+\end{enumerate}
+\end{frame}

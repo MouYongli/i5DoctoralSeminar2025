@@ -1,0 +1,31 @@
+% Bibliography Database
+% Add your references here
+
+@article{example2024,
+    author  = {Author, First and Author, Second},
+    title   = {Example Article Title},
+    journal = {Journal Name},
+    year    = {2024},
+    volume  = {1},
+    number  = {1},
+    pages   = {1--10},
+    doi     = {10.1000/example}
+}
+
+@book{examplebook2023,
+    author    = {Book, Author},
+    title     = {Example Book Title},
+    publisher = {Publisher Name},
+    year      = {2023},
+    address   = {City, Country},
+    isbn      = {978-0-000000-00-0}
+}
+
+@inproceedings{exampleconf2024,
+    author    = {Conference, Author},
+    title     = {Example Conference Paper},
+    booktitle = {Proceedings of the Example Conference},
+    year      = {2024},
+    pages     = {100--110},
+    address   = {City, Country}
+}

@@ -1,0 +1,69 @@
+% Package Imports and Settings
+
+% Encoding and fonts
+\usepackage[utf8]{inputenc}
+
+% Font packages - RWTH standard
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{lmodern}
+
+% Date formatting - German style (ddmmyyyy)
+\usepackage[ddmmyyyy]{datetime}
+\renewcommand{\dateseparator}{.}
+
+% Tables
+\usepackage{booktabs}
+
+% Format captions
+\usepackage[compatibility=false]{caption}
+
+% Graphics
+\usepackage{graphicx}
+\graphicspath{{graphics/}}
+
+% PGFPlots for charts and diagrams
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+
+% TikZ for diagrams
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,calc,trees,patterns}
+
+% Mathematics
+\usepackage{amsmath,amssymb}
+
+\usepackage{bm}
+% Hyperlinks - RWTH colors
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=rwth,
+    citecolor=rwth,
+    urlcolor=rwth
+}
+
+% Smart spacing
+\usepackage{xspace}
+
+% Bibliography - Modern biblatex approach
+\usepackage[
+    backend=biber,
+    style=numeric,        % Numbered citations [1], [2], etc.
+    sorting=none,         % Citation order (like unsrt)
+    maxbibnames=99,       % Show all authors
+    giveninits=true,      % Use initials for first names
+]{biblatex}
+
+% Load bibliography file
+\addbibresource{bibliography/references.bib}
+
+% Academic paper style: numbered list without icons
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+
+% Remove continuation numbering (I, II, III) from allowframebreaks
+\setbeamertemplate{frametitle continuation}{}
+
+% Compact bibliography layout
+\renewcommand*{\bibfont}{\footnotesize}
+\setlength{\bibitemsep}{0.5\baselineskip}

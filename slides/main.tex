@@ -1,0 +1,42 @@
+% Main Beamer Presentation File
+% Tutorial: Large Language Models and AI Agent Systems
+\documentclass[aspectratio=169]{beamer}
+
+% Load RWTH theme (from styles directory)
+\usepackage{styles/beamerthemerwth}
+
+% Load configuration modules
+\input{config/preamble}
+\input{config/metadata}
+\input{config/commands}
+
+\begin{document}
+
+% Title page with RWTH blue bar and background image
+\setbeamercolor{title page bar}{fg=rwth}
+\setbeamertemplate{title page}[rwth][graphics/logos/background/JPG/title_small.jpg]
+\begin{frame}[plain]
+\titlepage
+\end{frame}
+
+% Custom Outline with Card Layout
+\input{content/outline}
+
+% Content sections
+% \input{content/sections/introduction}  % Removed - simplified structure
+\input{content/sections/llms}
+\input{content/sections/agents}
+\input{content/sections/practices}
+% \input{content/sections/applications}  % Removed - simplified structure
+% \input{content/sections/conclusion}    % Removed - simplified structure
+
+% References section
+\section*{References}
+
+% References - Clean minimal style with numbered citations
+\begin{frame}[allowframebreaks,t]
+
+  \printbibliography[heading=none]
+\end{frame}
+
+\end{document}

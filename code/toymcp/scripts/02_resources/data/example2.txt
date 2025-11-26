@@ -1,0 +1,2 @@
+This is the second sample file.
+Demonstrates multiple resources.

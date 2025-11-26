@@ -1,0 +1,192 @@
+\mode<presentation>
+
+\RequirePackage{tikz}
+\RequirePackage{calc}
+\RequirePackage{ifthen}
+
+\usetikzlibrary{calc}
+
+%--------------------------------------------------------------------
+% Basic placeholders
+%--------------------------------------------------------------------
+\providecommand\inserttitle{}
+\providecommand\insertsubtitle{}
+
+\newlength{\titlepagelinewidth}
+\setlength{\titlepagelinewidth}{\paperwidth-16mm}
+
+%--------------------------------------------------------------------
+% Maxbox: #3 content scaled to not exceed (#1 width, #2 height)
+%--------------------------------------------------------------------
+\newcommand{\maxbox}[3]{%
+  \setbox9=\hbox{#3}%
+  \ifdim\wd9>#1
+    \setbox9=\hbox{\resizebox{#1}{!}{#3}}%
+  \fi
+  \ifdim\ht9>#2
+    \setbox9=\hbox{\resizebox{!}{#2}{\usebox9}}%
+  \fi
+  \usebox9
+}
+
+%--------------------------------------------------------------------
+% ⚠ No longer overriding the background template to avoid breaking the progress bar
+%--------------------------------------------------------------------
+% \defbeamertemplate*{background}{rwth}{}  % Delete / comment out this line
+
+%--------------------------------------------------------------------
+% Title page: Top 1/3 blue bar + optional background image
+% Usage: \setbeamertemplate{title page}[rwth][bgimage]
+%--------------------------------------------------------------------
+\defbeamertemplate{title page}{rwth}[1][]{%
+  % Top blue bar and background image
+  \usebeamercolor{title page bar}%
+  \begin{tikzpicture}[overlay, remember picture]
+    % Blue bar
+    \fill[fg]
+      ($(current page.north west)$)
+        rectangle
+      ($(current page.north east)+(0,-0.333\paperheight)$);
+
+    % Optional background image
+    \ifthenelse{\equal{#1}{}}{}{%
+      \node[inner sep=0pt] at
+        ($(current page.north west)+(0.5\paperwidth,-0.1665\paperheight)$)
+        {\includegraphics[width=\paperwidth,height=0.333\paperheight,keepaspectratio=false]{#1}};
+    }%
+  \end{tikzpicture}
+
+  % Create vertical space for the blue bar
+  \vspace{65mm}
+
+  % Title + subtitle
+  \begin{beamercolorbox}[wd=\titlepagelinewidth]{title}%
+    \usebeamerfont{title}%
+    {\fontsize{28}{34}\selectfont\inserttitle}\\[0.5em]%
+    {\usebeamerfont{subtitle}\fontsize{20}{24}\selectfont\textcolor{black}{\insertsubtitle}}%
+  \end{beamercolorbox}%
+
+  \vspace{1.5em}
+
+  % Author information
+  \begin{beamercolorbox}[wd=\titlepagelinewidth]{author}%
+    \usebeamerfont{author}%
+    \insertauthor\\[0.3em]
+    {\fontsize{16}{19}\selectfont\insertinstitute}\\[0.3em]
+    \ifdefined\insertuniversity
+      {\fontsize{16}{19}\selectfont\insertuniversity}\\[0.3em]
+    \fi
+    {\fontsize{14}{17}\selectfont
+      \ifdefined\insertlocation
+        \insertlocation
+        \ifdefined\insertdate
+          \quad|\quad
+        \fi
+      \fi
+      \insertdate
+    }
+  \end{beamercolorbox}%
+
+  \vfill
+
+  % Bottom right logo area
+  \begin{tikzpicture}[overlay, remember picture]
+    \node[anchor=south east, inner sep=8mm] at (current page.south east) {%
+      \begin{minipage}{0.65\paperwidth}
+        \raggedleft
+        % Conference logo
+        \ifdefined\insertconferencelogo
+          \maxbox{80mm}{20mm}{\includegraphics[keepaspectratio]{\insertconferencelogo}}%
+        \fi
+        \hspace{8mm}%
+        % University logo
+        \ifdefined\insertuniversitylogo
+          \maxbox{130mm}{20mm}{\includegraphics[keepaspectratio]{\insertuniversitylogo}}%
+        \fi
+      \end{minipage}%
+    };
+  \end{tikzpicture}%
+}
+
+%--------------------------------------------------------------------
+% Title page version 2: with horizontal line
+% Usage: \setbeamertemplate{title page}[rwthhrule]
+%    or  \setbeamertemplate{title page}[rwthhrule][nohrule]
+%--------------------------------------------------------------------
+\defbeamertemplate{title page}{rwthhrule}[1][]{%
+  \vspace{0.333\paperheight}
+  \vfill
+
+  \begin{beamercolorbox}[wd=\titlepagelinewidth,ht=61mm]{title}%
+    \usebeamerfont{title}%
+    \vbox to61mm{%
+      \inserttitle \\[2mm]%
+      \ifthenelse{\equal{#1}{}}{%
+        {\color{black}\hrule\vspace*{2mm}}%
+      }{}%
+      {\usebeamerfont{subtitle}\textcolor{black}{\insertsubtitle}}%
+      \vfil
+    }%
+  \end{beamercolorbox}%
+
+  \vfill
+
+  \begin{tikzpicture}[overlay, remember picture]
+    \ifthenelse{\equal{#1}{}}{}{%
+      \draw
+        ($(current page.south west)+(8mm,22.6mm)$) --
+        ($(current page.south east)+(-8mm,22.6mm)$);
+    }%
+    \node[inner sep=0pt] at
+      ($(current page.south east)+(-53.95mm,1.09mm)$)
+      {\maxbox{98.9mm}{22.6mm}{\insertlogo}};
+  \end{tikzpicture}%
+}
+
+%--------------------------------------------------------------------
+% Final page template
+% Usage: \begin{frame}[plain]\usebeamertemplate{final page}[Subtitle]{Title}\end{frame}
+%--------------------------------------------------------------------
+\defbeamertemplate*{final page}{rwth}[2][]{%
+  \vspace{69.1mm}
+  \begin{beamercolorbox}[wd=\textwidth,ht=30mm]{title}%
+    \usebeamerfont{title}%
+    \vbox to30mm{#2\vfil}%
+  \end{beamercolorbox}%
+  \vspace{11.7mm}
+  \begin{beamercolorbox}[wd=\textwidth,ht=46mm]{subtitle}%
+    \usebeamerfont{subtitle}%
+    \vbox to46mm{#1\vfil}%
+  \end{beamercolorbox}%
+  \begin{tikzpicture}[overlay, remember picture]
+    \node[inner sep=0pt] at
+      ($(current page.south east)+(-53.95mm,1.09mm)$)
+      {\maxbox{98.9mm}{22.6mm}{\insertlogo}};
+    \draw
+      ($(current page.south west)+(8mm,22.6mm)$) --
+      ($(current page.south east)+(-8mm,22.6mm)$);
+  \end{tikzpicture}%
+}
+
+%--------------------------------------------------------------------
+% List styles
+%--------------------------------------------------------------------
+\defbeamertemplate*{itemize item}{bullet}{•}
+\defbeamertemplate*{itemize subitem}{bar}{\textendash}
+\defbeamertemplate*{itemize subsubitem}{sq}{\fontsize{8pt}{8pt}\selectfont$\filledsquare$}
+
+\setbeamertemplate{enumerate item}{\arabic{enumi}.}
+\setbeamertemplate{enumerate subitem}{\roman{enumii}.}
+\setbeamertemplate{enumerate subsubitem}{\Roman{enumiii}.}
+
+%--------------------------------------------------------------------
+% Page margins
+%--------------------------------------------------------------------
+\setbeamersize{text margin left=8mm}
+\setbeamersize{text margin right=8mm}
+
+\setlength{\leftmargini}{8mm}
+\setlength{\leftmarginii}{6mm}
+\setlength{\leftmarginiii}{6mm}
+
+\mode<all>

@@ -39,8 +39,6 @@ make dev-worker
 make dev-front
 ```
 
-
-
 ## Development Guide
 
 We provide this guide to introduce how to configure and start the i5 Agents system, including both local testing and Docker deployment methods.

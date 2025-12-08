@@ -33,6 +33,8 @@ cleanall: clean
 
 docker-local-up:
 	$(COMPOSE_LOCAL) up -d --build
+	@sleep 2
+	@$(MAKE) db-init
 
 docker-local-down:
 	$(COMPOSE_LOCAL) down -v
